@@ -1,0 +1,39 @@
+name: Run Tests
+
+on: [push]
+
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Setup Python Environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      
+      - name: Install Dependencies
+        run: pip install unittest
+      
+      - name: Run UnitTests
+        run: python -m unittest discover -p "test*_unit.py"
+
+  pytest:
+    needs: unittest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      
+      - name: Setup Python Environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      
+      - name: Install Dependencies
+        run: pip install pytest
+      
+      - name: Run PyTests
+        run: pytest test_main_pytest.py
